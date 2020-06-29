@@ -110,14 +110,14 @@ exports.setPages = configs => {
 ```
 
 ## 环境变量
-Webpack 通过DefinePlugin插件将 `process.env` 注入浏览器端，在 Vue CLI 生产的项目中我们只需根据不同的环境在以 `.env` 开头的文件配置不同的变量，[请参考](https://cli.vuejs.org/guide/mode-and-env.html#environment-variables)。比如生产环境的环境变量在 `.env.production` 配置，如下：
+Webpack 通过DefinePlugin插件将 `process.env` 注入浏览器端，在 Vue CLI 生成的项目中我们只需根据不同的环境在以 `.env` 开头的文件配置不同的变量，[请参考](https://cli.vuejs.org/guide/mode-and-env.html#environment-variables)。比如生产环境的环境变量在 `.env.production` 配置，如下：
 
 ```
 NODE_ENV=production
 BASE_URL=/
 ```
 
-那么，在浏览器端可以通过 `process.env.NODE_ENV` 获取到配置的环境变量值。由于 `.env` 开头文件对环境变量的配置不够灵活（只能以 `key = value` 的形式设置，无法使用表达式），并且文件修改要重新构建项目才能生效，所以在 `/src/utils/configs/index` 文件对环境变量进行配置。
+那么，在浏览器端可以通过 `process.env.NODE_ENV` 获取到配置的环境变量值。由于 `.env` 开头文件对环境变量的配置不够灵活（只能以 `key = value` 的形式设置，无法使用表达式），并且文件修改要重新构建项目才能生效，所以在 `/src/utils/configs/index.js` 文件对环境变量进行配置。
 
 ## 通用功能整合
 由于多页应用各个多页之间是相对独立，对于一些通用的逻辑（如针对某个环境的逻辑、往Vue或者Vue原型上挂载方法、使用插件等等）的整合到独立模块以便复用，见 `/src/utils/entryConfig.js` 。
