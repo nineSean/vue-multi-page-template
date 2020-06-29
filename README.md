@@ -54,12 +54,12 @@ yarn serve
 │       │   ├── index.js              # index页面入口文件
 │       │   └── index.vue             # index页面根组件
 │       └─── about                    # about页面
-│            ├── assets                # about页面静态资源（如果有的话）
-│            ├── router                # about页面路由（如果有的话）
-│            ├── store                 # about页面vuex（如果有的话）
-│            ├── about.html            # about页面模板
-│            ├── about.js              # about页面入口文件
-│            └── about.vue             # about页面根组件
+│            ├── assets               # about页面静态资源（如果有的话）
+│            ├── router               # about页面路由（如果有的话）
+│            ├── store                # about页面vuex（如果有的话）
+│            ├── about.html           # about页面模板
+│            ├── about.js             # about页面入口文件
+│            └── about.vue            # about页面根组件
 ```
 
 ## 多页面配置
