@@ -22,7 +22,7 @@ yarn serve
 - [x] 通用功能整合
 - [x] alias 配置
 - [ ] 请求封装
-- [ ] 数据mock
+- [ ] 数据 mock
 
 ## 目录结构
 
@@ -46,20 +46,20 @@ yarn serve
 │   ├── services                      # 服务，处理服务端返回的数据
 │   ├── utils                         # 通用 utility，directive, mixin 等等
 │   └── pages                         # 各个页面
-│       ├── index                     # index页面
-│       │   ├── assets                # index页面静态资源（如果有的话）
-│       │   ├── router                # index页面路由（如果有的话）
-│       │   ├── store                 # index页面vuex（如果有的话）
-│       │   ├── index.html            # index页面模板
-│       │   ├── index.js              # index页面入口文件
-│       │   └── index.vue             # index页面根组件
-│       └─── about                    # about页面
-│            ├── assets               # about页面静态资源（如果有的话）
-│            ├── router               # about页面路由（如果有的话）
-│            ├── store                # about页面vuex（如果有的话）
-│            ├── about.html           # about页面模板
-│            ├── about.js             # about页面入口文件
-│            └── about.vue            # about页面根组件
+│       ├── index                     # index 页面
+│       │   ├── assets                # index 页面静态资源（如果有的话）
+│       │   ├── router                # index 页面路由（如果有的话）
+│       │   ├── store                 # index 页面 vuex（如果有的话）
+│       │   ├── index.html            # index 页面模板
+│       │   ├── index.js              # index 页面入口文件
+│       │   └── index.vue             # index 页面根组件
+│       └── about                     # about 页面
+│           ├── assets                # about 页面静态资源（如果有的话）
+│           ├── router                # about 页面路由（如果有的话）
+│           ├── store                 # about 页面 vuex（如果有的话）
+│           ├── about.html            # about 页面模板
+│           ├── about.js              # about 页面入口文件
+│           └── about.vue             # about 页面根组件
 ```
 
 ## 多页面配置
@@ -70,7 +70,7 @@ Vue CLI 底层基于 Webpack 打包构建项目，并且提供了一系列方便
 // /build/utils.js
 exports.setPages = configs => {
   const entryFiles = glob.sync(pagePath + '/*/*.js')
-  let result = entryFiles.reduce((accumulator, filePath) => {
+  const result = entryFiles.reduce((accumulator, filePath) => {
     const filename = filePath.substring(filePath.lastIndexOf('\/') + 1, filePath.lastIndexOf('.'))
     const tmp = filePath.substring(0, filePath.lastIndexOf('.'))
     let conf = {
@@ -110,7 +110,7 @@ exports.setPages = configs => {
 ```
 
 ## 环境变量
-Webpack 通过DefinePlugin插件将 `process.env` 注入浏览器端，在 Vue CLI 生成的项目中我们只需根据不同的环境在以 `.env` 开头的文件配置不同的变量，[请参考](https://cli.vuejs.org/guide/mode-and-env.html#environment-variables)。比如生产环境的环境变量在 `.env.production` 配置，如下：
+Webpack 通过 DefinePlugin 插件将 `process.env` 注入浏览器端，在 Vue CLI 生成的项目中我们只需根据不同的环境在以 `.env` 开头的文件配置不同的变量，[请参考](https://cli.vuejs.org/guide/mode-and-env.html#environment-variables)。比如生产环境的环境变量在 `.env.production` 配置，如下：
 
 ```
 NODE_ENV=production

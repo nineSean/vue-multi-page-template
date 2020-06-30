@@ -1,13 +1,17 @@
 const path = require('path')
 const {setPages} = require("./build/utils")
 const baseUrl = process.env.BASE_URL
+const env = process.env.NODE_ENV
 console.log('pages', setPages())
 
-const resolve = directory => path.join(__dirname, directory)
+const resolve = (...directorys) => path.join(__dirname, ...directorys)
 
 module.exports = {
+  publicPath: baseUrl,
+  outputDir: 'dist',
   pages: setPages(),
   configureWebpack: config => {
+    if (env === 'development') config.devtool = 'source-map'
   },
   chainWebpack: config => {
     config.resolve.alias
