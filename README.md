@@ -23,6 +23,8 @@ yarn serve
 - [x] alias 配置
 - [x] 请求封装
 - [x] 数据 mock
+- [ ] 移动端配置
+- [ ] 数据 mock
 
 ## 目录结构
 
@@ -34,10 +36,10 @@ yarn serve
 ├── .env.production                   # 生产环境变量配置文件
 ├── .browserslistrc                   # 浏览器兼容配置文件
 ├── babel.config.js                   # babel 配置文件
-├── package.json          
-.          
-.          
-.          
+├── package.json
+.
+.
+.
 ├── build                             # build 脚本
 ├── mock                              # mock 数据配置文件
 │   ├── db                            # mock 数据库，一个接口一个配置文件
@@ -78,7 +80,7 @@ exports.setPages = configs => {
       // 在 dist/***.html 的输出
       filename: filename + '.html',
       // 页面模板需要加对应的js脚本，如果不加这行则每个页面都会引入所有的js脚本
-      chunks: ['manifest', 'vendor', filename],
+      chunks: ['chunk-vendors', 'chunk-common', filename],
       // 已在模板中手动插入js、css资源，则inject设置为false避免自动插入
       inject: false,
     }
@@ -213,14 +215,19 @@ const mockData = [
 
 const mockDataMap = new Map(mockData)
 
-axios.interceptors.response.use((response) => {}, (error) => {
-  if (process.env.MOCK) {
-    return Promise.resolve(mockDataMap.get(response.config.url))
-  }
+axios.interceptors.request.use(config => Promise.reject(config), error => {
+  console.log('request error', error)
 })
+
+axios.interceptors.response.use(response => response, error => {
+  console.log('response error', error)
+  // if (process.env.MOCK) {
+    return Promise.resolve(mockDataMap.get(error.url))
+  // }
+})
+
+axios.get('/users').then(data => console.log('data', data))
 ```
-
-
 
 
 
