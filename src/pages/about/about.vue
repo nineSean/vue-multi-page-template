@@ -13,6 +13,15 @@
         msg: 'sean',
       }
     },
+    created() {
+      this.$request.get('/customers', {
+        params: {
+          // x: 'x'
+        },
+      }).then(data => {
+        console.log('index page data', data)
+      })
+    }
   }
 </script>
 

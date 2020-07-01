@@ -2,7 +2,8 @@
   "name": "brick-vue-multi-page-template",
   "version": "0.1.0",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
+    "dev:mock": "MOCK=true vue-cli-service serve",
     "build": "vue-cli-service build"
   },
   "dependencies": {
@@ -17,6 +18,8 @@
     "@vue/cli-plugin-router": "~4.4.0",
     "@vue/cli-plugin-vuex": "~4.4.0",
     "@vue/cli-service": "~4.4.0",
+    "mocker-api": "^2.1.0",
+    "mockjs": "^1.1.0",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
