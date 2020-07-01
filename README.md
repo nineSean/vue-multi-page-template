@@ -21,8 +21,8 @@ yarn serve
 - [x] 环境变量
 - [x] 通用功能整合
 - [x] alias 配置
-- [ ] 请求封装
-- [ ] 数据mock
+- [x] 请求封装
+- [x] 数据 mock
 
 ## 目录结构
 
@@ -39,6 +39,9 @@ yarn serve
 .          
 .          
 ├── build                             # build 脚本
+├── mock                              # mock 数据配置文件
+│   ├── db                            # mock 数据库，一个接口一个配置文件
+│   └── index.js                      # 所有接口数据聚合处
 ├── src                               # Vue.js 核心业务
 │   ├── api                           # 接入后端服务的基础 API
 │   ├── assets                        # 静态文件
@@ -46,20 +49,14 @@ yarn serve
 │   ├── services                      # 服务，处理服务端返回的数据
 │   ├── utils                         # 通用 utility，directive, mixin 等等
 │   └── pages                         # 各个页面
-│       ├── index                     # index页面
-│       │   ├── assets                # index页面静态资源（如果有的话）
-│       │   ├── router                # index页面路由（如果有的话）
-│       │   ├── store                 # index页面vuex（如果有的话）
-│       │   ├── index.html            # index页面模板
-│       │   ├── index.js              # index页面入口文件
-│       │   └── index.vue             # index页面根组件
-│       └─── about                    # about页面
-│            ├── assets               # about页面静态资源（如果有的话）
-│            ├── router               # about页面路由（如果有的话）
-│            ├── store                # about页面vuex（如果有的话）
-│            ├── about.html           # about页面模板
-│            ├── about.js             # about页面入口文件
-│            └── about.vue            # about页面根组件
+│       ├── index                     # index 页面
+│       │   ├── assets                # index 页面静态资源（如果有的话）
+│       │   ├── router                # index 页面路由（如果有的话）
+│       │   ├── store                 # index 页面 vuex（如果有的话）
+│       │   ├── index.html            # index 页面模板
+│       │   ├── index.js              # index 页面入口文件
+│       │   └── index.vue             # index 页面根组件
+│       └── about                     # about 页面
 ```
 
 ## 多页面配置
@@ -70,7 +67,7 @@ Vue CLI 底层基于 Webpack 打包构建项目，并且提供了一系列方便
 // /build/utils.js
 exports.setPages = configs => {
   const entryFiles = glob.sync(pagePath + '/*/*.js')
-  let result = entryFiles.reduce((accumulator, filePath) => {
+  const result = entryFiles.reduce((accumulator, filePath) => {
     const filename = filePath.substring(filePath.lastIndexOf('\/') + 1, filePath.lastIndexOf('.'))
     const tmp = filePath.substring(0, filePath.lastIndexOf('.'))
     let conf = {
@@ -110,7 +107,7 @@ exports.setPages = configs => {
 ```
 
 ## 环境变量
-Webpack 通过DefinePlugin插件将 `process.env` 注入浏览器端，在 Vue CLI 生成的项目中我们只需根据不同的环境在以 `.env` 开头的文件配置不同的变量，[请参考](https://cli.vuejs.org/guide/mode-and-env.html#environment-variables)。比如生产环境的环境变量在 `.env.production` 配置，如下：
+Webpack 通过 DefinePlugin 插件将 `process.env` 注入浏览器端，在 Vue CLI 生成的项目中我们只需根据不同的环境在以 `.env` 开头的文件配置不同的变量，[请参考](https://cli.vuejs.org/guide/mode-and-env.html#environment-variables)。比如生产环境的环境变量在 `.env.production` 配置，如下：
 
 ```
 NODE_ENV=production
@@ -136,3 +133,99 @@ BASE_URL=/
   }
 }
 ```
+
+## 请求封装
+使用 axios 发送请求，axios 提供了拦截器可以在请求和响应前更优雅的添加逻辑。
+
+如在请求前附上凭证、token或者令牌，时效性校验等等；在响应到最末端的业务处理前过滤有效数据，响应错误弹窗，权限不足弹窗，跳转登录页等等。
+设计的请求链路如下:
+
+```
+Vue 页面组件 <———— services 层 <———— api 层 <———— this.$request <———— axios <———— XMLHttpRequest
+```
+
+从右往左：axios 是基于 XMLHttpRequest 的封装，把 axios 挂载在了每个实例的 $request 上，api 层对每个接口进行封装暴露一个简单的方法用于返回 `promise` ，services 层可能会对多个 api 进行整合拼装成某一个业务需要的数据，设计 services 层的初衷希望把更多 Vue 页面组件上的逻辑分离出来，待实践中总结更多经验。
+
+## 数据 mock
+作为前端不用完全依赖后端从而能够并行开发，数据 mock 发挥了至关重要的作用。市面上一大堆介绍 mock 的帖子博文，这里分享自己总结的比较优雅的 mock 方法（最佳实践）：使用 Webpack devServer 的 before 钩子，在 环境变量 `MOCK` 为 `true` 时，借助 `api-mocker` （一个提供优雅 api mock 的库，该库基于 `express`，可以 mock HTTP 的各种方法） 使用 `mockjs` 生成随机数据，代码如下：
+
+```js
+// /vue.config.js
+{
+  devServer: {
+    before(app) {
+// 可在 package.json 文件中的 script 中的命令设置环境变量，然后通过 dev:mock 命令即可使用 mock 数据，后端接口开发完毕联调时候切换为 dev 即可，这样就优雅的实现了通过命令的方式切换功能，而不用手动改代码了，舒服~~~
+// /package.json
+// "scripts": {
+//  "dev": "vue-cli-service serve",
+//  "dev:mock": "MOCK=true vue-cli-service serve",
+// }
+      if (process.env.MOCK) {
+        apiMocker(app, resolve('mock/index.js'))
+      }
+    },
+  }
+}
+
+// /mock/index.js
+const {demo1, demo2} = require('./db/index.js')
+
+const mockData = {
+  'GET /users': demo1,
+  'GET /customers': demo2,
+}
+module.exports = mockData
+
+// /mock/db/index.js
+const demo1 = require('./demo1.js')
+const demo2 = require('./demo2.js')
+module.exports = {
+  demo1,
+  demo2,
+}
+
+```
+
+后续添加接口时候只需在 `/mock/db/` 目录下添加接口文件，`/mock/db/index.js` 中汇总最后在 `/mock/index.js` 中引入配置请求方法与接口即可。结合 `express` 与 `mockjs` 可以自己简单的实现后端逻辑生成随机数据了，请参考 [api mocker](https://github.com/jaywcjlove/mocker-api) 与 [mockjs](http://mockjs.com) ，代码如下：
+
+```js
+// /mock/db/demo1
+const {Random} = require('mockjs')
+module.exports = (req, res) => {
+  const data = {
+    users: Array
+      .from({length: (5 + Math.floor(Math.random() * 5))}, (_, i) => ({id: i}))
+      .map(user => {
+        user.name = Random.cname()
+        return user
+      })
+  }
+  res.json(data)
+}
+```
+
+这里再提供一个用 axios 响应拦截器实现 mock 数据的思路，在某些情况下可以使用，代码如下：
+
+```js
+const mockData = [
+  ['/users', {data: [{name: 'sean'}], status: 'success'}]
+]
+
+const mockDataMap = new Map(mockData)
+
+axios.interceptors.response.use((response) => {}, (error) => {
+  if (process.env.MOCK) {
+    return Promise.resolve(mockDataMap.get(response.config.url))
+  }
+})
+```
+
+
+
+
+
+
+
+
+
+

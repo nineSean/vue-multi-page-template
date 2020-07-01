@@ -6,14 +6,13 @@ const ENV_VARIABLE = {
   production: {
     ...common,
     baseUrl: '/',
-    url: '',
+    url: '/',
   },
   development: {
     ...common,
     baseUrl: '/',
-    url: '',
+    url: process.env.MOCK ? '/' : '/',
   },
 }
 
 export default ENV_VARIABLE[process.env.NODE_ENV]
-
