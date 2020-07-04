@@ -10,6 +10,13 @@ const resolve = (...directorys) => path.join(__dirname, ...directorys)
 module.exports = {
   publicPath: baseUrl,
   outputDir: 'dist',
+  css: {
+    loaderOptions: {
+      scss: {
+        prependData: `@import "~@style/global.scss";`
+      },
+    },
+  },
   pages: setPages(),
   configureWebpack: config => {
     if (nodeEnv === 'development') config.devtool = 'source-map'
@@ -20,9 +27,11 @@ module.exports = {
       .set('@comp', resolve('src/components'))
       .set('@util', resolve('src/utils'))
       .set('@mock', resolve('mock'))
+      .set('@style', resolve('src/style'))
     config.plugin('define')
       .tap(options => {
         options[0]['process.env'].MOCK = process.env.MOCK && JSON.parse(process.env.MOCK)
+        options[0]['process.env'].MOBILE = process.env.MOBILE && JSON.parse(process.env.MOBILE)
         return options
       })
     config.optimization.minimizer('terser')
