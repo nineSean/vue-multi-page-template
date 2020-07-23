@@ -4,11 +4,20 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>index page</title>
+  <% if(htmlWebpackPlugin.options.isMobile) { %>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <% } %>
   <% for (var chunk in htmlWebpackPlugin.files.css) { %>
   <% if(htmlWebpackPlugin.files.css[chunk]) {%>
   <link href="<%= htmlWebpackPlugin.files.css[chunk] %>" rel="stylesheet" />
   <%}%>
   <% } %>
+  <style>
+    body{
+      margin: 0;
+      padding: 0;
+    }
+  </style>
 </head>
 <body>
 <div id="app"></div>

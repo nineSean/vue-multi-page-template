@@ -1,5 +1,7 @@
 <template>
-  <div>index page</div>
+  <div id="home-page">
+    index page
+  </div>
 </template>
 
 <script>
@@ -22,6 +24,10 @@
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  #home-page{
+    width: px(375);
+    font-size: 12px;
+    background-color: grey;
+  }
 </style>

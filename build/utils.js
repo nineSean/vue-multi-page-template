@@ -19,6 +19,7 @@ exports.setPages = configs => {
       chunks: ['chunk-vendors', 'chunk-common', filename],
       // 已在模板中手动插入 js 、css 资源，则 inject 设置为 false 避免自动插入
       inject: false,
+      isMobile: process.env.MOBILE && JSON.parse(process.env.MOBILE)
     }
     if (process.env.NODE_ENV === 'production') {
       conf = merge(conf, {

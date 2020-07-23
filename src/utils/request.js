@@ -17,7 +17,8 @@ request.interceptors.request.use(config => {
 
 request.interceptors.response.use( response => {
   console.log('response interceptor', response)
-  return response
+  const {data} = response
+  return data
 }, error => {
   console.log('response error', error)
   return Promise.reject(error)
