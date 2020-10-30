@@ -9,7 +9,7 @@
   <% } %>
   <% for (var chunk in htmlWebpackPlugin.files.css) { %>
   <% if(htmlWebpackPlugin.files.css[chunk]) {%>
-  <link href="<%= htmlWebpackPlugin.files.css[chunk] %>" rel="stylesheet" />
+  <link href="<%= htmlWebpackPlugin.files.css[chunk] %>" rel="stylesheet" type="text/css"/>
   <%}%>
   <% } %>
   <style>

@@ -12,9 +12,10 @@ export default async Vue => {
       import('vconsole').then(({default: VConsole}) => {
         const vconsole = new VConsole()
       })
-      setRem()
     }
   }
+
+  process.env.MOBILE && setRem()
 
   Vue.$request = Vue.prototype.$request = request
   Vue.$goTo = Vue.prototype.$goTo = goTo
