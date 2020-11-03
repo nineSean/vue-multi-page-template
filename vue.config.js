@@ -11,7 +11,14 @@ module.exports = {
   publicPath: baseUrl,
   outputDir: 'dist',
   css: {
+    requireModuleExtension: false,
     loaderOptions: {
+      css: {
+        modules: {
+          localIdentName: '[path][name]-[local]-[hash:4]'
+        },
+        localsConvention: 'camelCaseOnly',
+      },
       scss: {
         prependData: `@import "~@style/global.scss";`
       },

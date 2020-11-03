@@ -1,6 +1,7 @@
 <template>
-  <div id="home-page">
+  <div :class="$style.homePage">
     index page
+    <router-view></router-view>
   </div>
 </template>
 
@@ -24,10 +25,9 @@
   }
 </script>
 
-<style scoped lang="scss">
-  #home-page{
+<style module lang="scss">
+  .home-page{
     width: px(375);
     font-size: 12px;
-    background-color: grey;
   }
 </style>

@@ -25,6 +25,6 @@
   }
 </script>
 
-<style scoped>
+<style module lang="scss">
 
 </style>
